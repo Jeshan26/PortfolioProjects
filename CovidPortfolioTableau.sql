@@ -49,6 +49,47 @@ where continent is not null
 --Group By date
 order by 1,2
 
+	
+--1 for tableau
+
+Select SUM(cast (new_cases as int)) as total_cases, SUM(cast(new_deaths as int)) as total_deaths, SUM(cast(new_deaths as int))/SUM(cast (new_cases as float))*100 as DeathPercentage
+From PortfolioProject..CovidDeathscsv
+--Where location like '%states%'
+where continent is not null 
+--Group By date
+order by 1,2
+
+
+--2 for tableau
+
+Select location, SUM(cast(new_deaths as int)) as TotalDeathCount
+from PortfolioProject..CovidDeathscsv
+
+where continent is null
+and location not in ('World', 'European Union', 'International')
+Group by location
+order by TotalDeathCount desc
+
+
+-- 3.
+
+Select Location, Population, MAX(total_cases) as HighestInfectionCount,  Max((Convert(float,total_cases)/population))*100 as PercentPopulationInfected
+From PortfolioProject..CovidDeathscsv
+--Where location like '%states%'
+Group by Location, Population
+order by PercentPopulationInfected desc
+
+-- 4.
+
+
+Select Location, Population,date, MAX(CONVERT(int,total_cases)) as HighestInfectionCount,  Max((CONVERT(float,total_cases)/population))*100 as PercentPopulationInfected
+From PortfolioProject..CovidDeathscsv
+--Where location like '%states%'
+Group by Location, Population, date
+order by PercentPopulationInfected desc
+
+	
+
 
 -- Total Population vs Vaccinations
 -- Shows Percentage of Population that has recieved at least one Covid Vaccine
